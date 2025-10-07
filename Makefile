@@ -11,4 +11,5 @@ memtest: main.c
 	gcc -fsanitize=address -g -o app main.c calculator.c utils.c history.c
 
 clean:
-	rm -f app test
+	rm -f app 
+	rm -f test
