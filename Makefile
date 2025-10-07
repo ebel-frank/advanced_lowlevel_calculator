@@ -1,13 +1,14 @@
 all: main
 
-main: calculator.c
-	gcc -o app calculator.c bcal.c
+main: main.c
+	gcc -o app main.c calculator.c utils.c history.c
 
-unit_test: unit_test.c
-	gcc -std=c11 -o unit_test unit_test.c bcal.c munit/munit.c
+test: test.c
+# 	gcc -lrt -lm -o test test.c calculator.c utils.c history.c
+	gcc test.c calculator.c utils.c history.c -lm -o test
 
-int_test: int_test.c
-	gcc -std=c11 -o int_test int_test.c bcal.c
+memtest: main.c
+	gcc -fsanitize=address -g -o app main.c calculator.c utils.c history.c
 
 clean:
-	rm -f app unit_test int_test
+	rm -f app test
