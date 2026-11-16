@@ -1,2 +1,13 @@
 Timestamp ,Expression ,Result ,Error 
 1759850740,"5 / 0","Division by zero!",1
+1759862047,"5 + 9","14.000000",0
+1759862052,"7 * 2","14.000000",0
+1759862057,"23 + 90","113.000000",0
+1759862062,"abc + 9","Invalid number format: abc",1
+1759862068,"5 / 3","1.666667",0
+1759862077,"89 / 0","Division by zero!",1
+1759862084,"12 ^ 2","144.000000",0
+1759862095,"12 ^ -2","Invalid input or expression ",1
+1759862120,"5 pow 3","Invalid input or expression ",1
+1759862129,"    ","Invalid input or expression ",1
+1759862149,"  + 9 - 01","8.000000",0

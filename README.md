@@ -15,27 +15,19 @@ This section explains the structure, key design decisions, and expected behavior
 
 Files and responsibilities
 - `main.c` — CLI parsing and interactive loop. Reads user input, calls `calculator` functions, and records results using the history module.
-- `calculator.c` / `calculator.h` — Core arithmetic operations. Each operation is implemented as a function that takes numeric inputs and returns a result. Division returns an error code or uses a defined behavior for divide-by-zero cases (see Error handling).
-- `history.c` / `history.h` — Simple CSV-backed history. Provides functions to append an operation to `history.csv` and to read recent entries.
+- `calculator.c` / `calculator.h` — Core arithmetic operations. Each operation is implemented as a function that takes numeric inputs and returns a result. Division returns an error code or uses a defined behavior for divide-by-zero cases.
+- `history.c` / `history.h` — Simple CSV-backed history. Provides functions to append an operation to `history.csv` and to read recent entries. It also allows users to save history is a custom file and replay past calculations.
 - `utils.c` / `utils.h` — Helper functions for parsing, input validation, and small utilities shared across modules.
-- `unit_test.c` / `int_test.c` — Test cases using the included `munit` framework. Unit tests target `calculator` functions and utilities. The integration test exercises `main`-level workflows and history persistence.
+- `test.c` — Test cases using the included `minunit` framework. Unit tests target `calculator`, `history` and `utils` functions.
 
 Design choices
 - Single-responsibility modules: each .c/.h pair has a small, testable responsibility which simplifies unit testing and maintenance.
-- CSV history: chosen for simplicity and human-readability. The format is a single line per operation: timestamp,operation,operand1,operand2,result (implementation-specific).
-- Error handling: functions return integer error codes for exceptional cases (e.g., divide-by-zero). Tests assert correct error codes and program behavior on invalid input.
-- Minimal dependencies: no external libraries besides the small `munit` test runner included in the repo.
-
-Data shapes and contracts
-- Calculator functions:
-   - Inputs: two doubles (or ints depending on implementation) and an enum/op code for operation.
-   - Outputs: result (double) and an integer status (0 for success, non-zero for errors).
-- History append:
-   - Input: operation metadata (timestamp string, op string, operands, result)
-   - Output: boolean / status code indicating write success.
+- CSV history: chosen for simplicity and human-readability. The format is a single line per operation: timestamp,expression,result,is_error.
+- Error handling: functions return error codes for exceptional cases (e.g., divide-by-zero). Tests assert correct error codes and program behavior on invalid input.
+- Minimal dependencies: no external libraries besides the small `minunit` test runner included in the repo.
 
 Edge cases considered
-- Division by zero — calculator returns an error code and the CLI prints a helpful message. History should not record failed operations.
+- Division by zero — calculator returns an error code and the CLI prints a helpful message.
 - Invalid numeric input — parsed by `utils` with validation; user is re-prompted on invalid input.
 - File write errors (history CSV) — functions return an error code which the CLI surfaces to the user.
 
@@ -64,6 +56,12 @@ Follow these steps to build the calculator:
      make test
      ```
      This generates an executable named `test`.
+
+   - To build the memory tests:
+     ```bash
+     make memtest
+     ```
+     This generates an executable named `memapp`.
 
 ## Running the Program
 1. **Run the calculator**:
